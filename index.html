@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PVA v2</title>
+    <link rel="stylesheet" href="output.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.9.0/sweetalert2.all.min.js" integrity="sha512-LTmGiRLYz7G5Sxr4MMXGaOfia3kGZKGAlXzrSCGc4GBGxymu1RGwhFFGwiOQUm+bJOGlV0AmHd1S7zeFlwzkFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.9.0/sweetalert2.css" integrity="sha512-eRBMRR/qeSlGYAb6a7UVwNFgXHRXa62u20w4veTi9suM2AkgkJpjcU5J8UVcoRCw0MS096e3n716Qe9Bf14EyQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.cdnfonts.com/css/seven-segment" rel="stylesheet">
+</head>
+
+<body class="h-screen bg-gray-100">
+
+    <header class="p-4 text-white bg-sky-500">
+        <h1 class="text-2xl">PVA ver.2 beta</h1>
+    </header>
+
+    <div class="flex">
+        <div class="p-4 m-4 w-1/4 h-screen bg-gray-200 rounded-lg shadow-lg">
+            <div class="mb-4">
+                <span class="countdown text-4xl font-mono font-bold" style="font-family: 'Seven Segment'" id="countdown">
+                    <span style="--value:0;"></span>:
+                    <span style="--value:0;"></span> : 
+                    <span style="--value:0;"></span>
+                  </span>  
+                  <br>
+                  <button class="btn btn-xs mb-4" onclick="clearTimer()">Reset</button>
+
+                  <h2 class="mb-2 text-md font-bold">Timer</h2>
+                  <h2 class="mb-2 ml-4 text-md ">Presets:</h2>
+                  <div class="flex flex-col w-fit ml-4">
+                    <button class="btn m-1" onclick="timerCycle(25, 5, 4)">Pomodoro (25 on, 5 off, 4 times)</button>
+                  <button class="btn m-1" onclick="timerCycle(50, 10, 4)">50 on 10  off, 4 times</button>
+                  <button class="btn m-1" onclick="timerCycle(60, 15, 4)">1h on, 15m off, 4 times</button>
+                  </div>
+                  <h2 class="mb-2 ml-4 text-md ">Custom:</h2>
+                  <div class="ml-4">
+                    <input type="number" step="1" min="1" max="1440" class="m-1 w-fit regulate-size" id="minOn">min on<br>
+                    <input type="number" step="1" min="1" max="1440" class="m-1 w-fit regulate-size" id="minOff">min off<br>
+                    <input type="number" step="1" min="1" max="10" class="m-1 w-fit regulate-size"id="breakAfter">times
+                    <button class="btn m-1 btn-sm" id="customStart">Start</button>
+                  </div>
+                    
+                    
+                </div>
+            <div>
+                <h2 class="mb-2 text-lg font-bold">Settings</h2>
+                <div class="flex flex-col">
+                    <h2 class="mb-2 text-md font-bold">Task List</h2>
+                    <div class="flex flex-row ml-4">
+                        <label for="compactMode" class="mr-2">Compact Mode</label>
+                        <input name="compactMode" type="checkbox" class="checkbox mb-2">
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <h2 class="mb-2 text-md font-bold">Intensity</h2>
+                    <div class="flex flex-row ml-4" id="intensitySel">
+                        <input id="default" type="radio" name="radio-1" value="low" class="radio m-2 ml-0 checked:bg-emerald-500" />
+                        <input type="radio" name="radio-1" value="mid" class="radio m-2 checked:bg-yellow-400" />
+                        <input type="radio" name="radio-1" value="high" class="radio m-2 checked:bg-orange-500" />
+                        <input type="radio" name="radio-1" value="nuclear" class="radio m-2 checked:bg-red-600" />
+                    </div>
+                    <div id="intensityDef" class="ml-4"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task Container -->
+        <div class="p-4 w-3/4">
+            <h2 class="mb-4 text-2xl">Task List</h2>
+            <div>
+                <button class="btn" id="addTask" onclick="addTask()"><i class="fas fa-plus text-green-500 text-3xl"></i></button>
+            </div>
+            <div id="tasksContainer" class="grid grid-cols-2"> 
+
+            </div>
+        </div>
+    </div>
+    <div class="block fixed inset-0 z-50 bg-white md:hidden sm:visible lg:hidden"></div>
+</body>
+
+
+<script src="pva.js"></script>
+</html>
