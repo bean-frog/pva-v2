@@ -25,6 +25,7 @@ function updateSettingsItem(key, newVal) {
         localStorage.setItem(storageKey, JSON.stringify(newData));
     }
 }
+
 //^^ settings ^^
 //vv timer vv
 function setTimer(min, callback) {
@@ -235,7 +236,7 @@ async function addTask() {
         let tasks = localStorage.getItem('tasks');
         tasks = tasks ? JSON.parse(tasks) : {};
         const taskId = Object.keys(tasks).length + 1;
-        const newTask = { title: formValues[0], desc: formValues[1], checked: false };
+        const newTask = { title: formValues[0], desc: formValues[1], complete: false };
         tasks[taskId] = newTask;
         localStorage.setItem('tasks', JSON.stringify(tasks));
         let template = `
@@ -253,12 +254,21 @@ async function addTask() {
 }
 window.onload = function () {
     if (tasksContainer){
-            loadTasks();
+            if (JSON.parse(localStorage.getItem('pva-v2-settings').compactTasks = true)) {
+                reloadTasksCompact();
+                document.getElementById('compactToggle').click()
+            } else {
+                loadTasks();
+            }
     } else {
         let checkForEl = setInterval(function() {
             if (tasksContainer){
-            loadTasks();
-            clearInterval(checkForEl);
+                if (JSON.parse(localStorage.getItem('pva-v2-settings').compactTasks = true)) {
+                    reloadTasksCompact()
+                } else {
+                    loadTasks();
+                }         
+                   clearInterval(checkForEl);
             return;
         }
         },10)
@@ -273,7 +283,7 @@ function loadTasks() {
         let template = `
             <div class="p-4 bg-white rounded-lg shadow-md m-2" data-task-id="${taskId}">
                 <div class="flex flex-row">
-                    <input id="cbox-${taskId}" type="checkbox" class="checkbox mr-4" onchange="if(this.checked){this.parentElement.parentElement.setAttribute('class', 'p-4 bg-emerald-200 rounded-lg shadow-md m-2')}else if(!this.checked){this.parentElement.parentElement.setAttribute('class', 'p-4 bg-white rounded-lg shadow-md m-2')}">
+                    <input id="cbox-${taskId}" type="checkbox" class="checkbox mr-4" onchange="toggleTaskCompletion(this)">
                     <button class="p-2 pt-0 pl-0" onclick="removeTask(${taskId})"><i class="fas fa-trash text-red-600"></i></button>
                     <h3 class="mb-2 text-lg font-bold">${tasks[taskId].title}</h3>
                 </div>
@@ -284,7 +294,7 @@ function loadTasks() {
         tasksContainer.classList.remove('grid-cols-1');
         tasksContainer.classList.add('grid-cols-2');
         let cboxID = document.getElementById(`cbox-${taskId}`)
-        if (tasks[taskId].checked == true) {
+        if (tasks[taskId].complete == true) {
             cboxID.click()
         }
     }
@@ -297,7 +307,7 @@ function reloadTasksCompact() {
         let template = `
         <div class="p-2 bg-white rounded-lg shadow-md m-2"data-task-id="${taskId}">
         <div class="flex flex-row items-center">
-            <input type="checkbox" class="checkbox mr-2" onchange="if(this.checked){this.parentElement.parentElement.setAttribute('class', 'p-4 bg-emerald-200 rounded-lg shadow-md m-2')}else if(!this.checked){this.parentElement.parentElement.setAttribute('class', 'p-4 bg-white rounded-lg shadow-md m-2')}">
+            <input id="cbox-${taskId}" type="checkbox" class="checkbox mr-2" onchange="toggleTaskCompletion(this)">
             <button class="pr-2 self-center" onclick="removeTask(${taskId})"><i class="fas fa-trash text-red-600"></i></button>
             <h3 class="self-center text-lg font-bold">${tasks[taskId].title}</h3>
             <p class="ml-2 self-center">${tasks[taskId].desc}</p>
@@ -307,6 +317,10 @@ function reloadTasksCompact() {
         tasksContainer.insertAdjacentHTML('beforeend', template);
         tasksContainer.classList.remove('grid-cols-2');
         tasksContainer.classList.add('grid-cols-1');
+        let cboxID = document.getElementById(`cbox-${taskId}`)
+        if (tasks[taskId].complete == true) {
+            cboxID.click()
+        }
     }
 }
 function removeTask(taskId) {
@@ -323,6 +337,13 @@ function toggleTaskCompletion(checkbox) {
     if (checkbox.checked) {
         taskElement.classList.add('bg-emerald-200');
         taskElement.classList.remove('bg-white');
+        let taskId = checkbox.id.replace(/cbox-/g, '');
+         let tasks = localStorage.getItem('tasks');
+    tasks = tasks ? JSON.parse(tasks) : {};
+tasks[taskId].complete = true;
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+
+           
     } else {
         taskElement.classList.remove('bg-emerald-200');
         taskElement.classList.add('bg-white');
