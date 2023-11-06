@@ -235,7 +235,7 @@ async function addTask() {
         let tasks = localStorage.getItem('tasks');
         tasks = tasks ? JSON.parse(tasks) : {};
         const taskId = Object.keys(tasks).length + 1;
-        const newTask = { title: formValues[0], desc: formValues[1] };
+        const newTask = { title: formValues[0], desc: formValues[1], checked: false };
         tasks[taskId] = newTask;
         localStorage.setItem('tasks', JSON.stringify(tasks));
         let template = `
@@ -265,7 +265,7 @@ window.onload = function () {
     }
 };
 function loadTasks() {
-    const tasksContainer = document.getElementById('tasksContainer');
+    const tasksContainer = document.getElementById('tasksContainer'); //redundant?
     let tasks = localStorage.getItem('tasks');
     tasks = tasks ? JSON.parse(tasks) : {};
 
@@ -273,14 +273,40 @@ function loadTasks() {
         let template = `
             <div class="p-4 bg-white rounded-lg shadow-md m-2" data-task-id="${taskId}">
                 <div class="flex flex-row">
-                    <input type="checkbox" class="checkbox mr-4" onchange="if(this.checked){this.parentElement.parentElement.setAttribute('class', 'p-4 bg-emerald-200 rounded-lg shadow-md m-2')}else if(!this.checked){this.parentElement.parentElement.setAttribute('class', 'p-4 bg-white rounded-lg shadow-md m-2')}">
+                    <input id="cbox-${taskId}" type="checkbox" class="checkbox mr-4" onchange="if(this.checked){this.parentElement.parentElement.setAttribute('class', 'p-4 bg-emerald-200 rounded-lg shadow-md m-2')}else if(!this.checked){this.parentElement.parentElement.setAttribute('class', 'p-4 bg-white rounded-lg shadow-md m-2')}">
                     <button class="p-2 pt-0 pl-0" onclick="removeTask(${taskId})"><i class="fas fa-trash text-red-600"></i></button>
                     <h3 class="mb-2 text-lg font-bold">${tasks[taskId].title}</h3>
                 </div>
                 <p class="break-words">${tasks[taskId].desc}</p>
             </div>
+        `;        
+        tasksContainer.insertAdjacentHTML('beforeend', template);
+        tasksContainer.classList.remove('grid-cols-1');
+        tasksContainer.classList.add('grid-cols-2');
+        let cboxID = document.getElementById(`cbox-${taskId}`)
+        if (tasks[taskId].checked == true) {
+            cboxID.click()
+        }
+    }
+}
+function reloadTasksCompact() {
+    let tasks = localStorage.getItem('tasks');
+    tasks = tasks ? JSON.parse(tasks) : {};
+
+    for (const taskId in tasks) {
+        let template = `
+        <div class="p-2 bg-white rounded-lg shadow-md m-2"data-task-id="${taskId}">
+        <div class="flex flex-row items-center">
+            <input type="checkbox" class="checkbox mr-2" onchange="if(this.checked){this.parentElement.parentElement.setAttribute('class', 'p-4 bg-emerald-200 rounded-lg shadow-md m-2')}else if(!this.checked){this.parentElement.parentElement.setAttribute('class', 'p-4 bg-white rounded-lg shadow-md m-2')}">
+            <button class="pr-2 self-center" onclick="removeTask(${taskId})"><i class="fas fa-trash text-red-600"></i></button>
+            <h3 class="self-center text-lg font-bold">${tasks[taskId].title}</h3>
+            <p class="ml-2 self-center">${tasks[taskId].desc}</p>
+        </div>
+    </div>
         `;
         tasksContainer.insertAdjacentHTML('beforeend', template);
+        tasksContainer.classList.remove('grid-cols-2');
+        tasksContainer.classList.add('grid-cols-1');
     }
 }
 function removeTask(taskId) {
@@ -302,6 +328,16 @@ function toggleTaskCompletion(checkbox) {
         taskElement.classList.add('bg-white');
     }
 }
+document.getElementById('compactToggle').addEventListener('click', function() {
+    if (this.checked) {
+        tasksContainer.innerHTML = ``;
+        updateSettingsItem('compactTasks', true);
+        reloadTasksCompact()
+    } else if (!this.checked) {
+        tasksContainer.innerHTML = ``;
+        loadTasks();
+    }
+})
 //^^ tasks ^^
 //vv sound vv
 function playSound(path) {
