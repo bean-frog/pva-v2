@@ -249,31 +249,50 @@ async function addTask() {
                 <p class="break-words">${formValues[1]}</p>
             </div>
         `;
+        let compactTemplate = `
+        <div class="p-2 bg-white rounded-lg shadow-md m-2"data-task-id="${taskId}">
+        <div class="flex flex-row items-center">
+            <input id="cbox-${taskId}" type="checkbox" class="checkbox mr-2" onchange="toggleTaskCompletion(this)">
+            <button class="pr-2 self-center" onclick="removeTask(${taskId})"><i class="fas fa-trash text-red-600"></i></button>
+            <h3 class="self-center text-lg font-bold">${tasks[taskId].title}</h3>
+            <p class="ml-2 self-center">${tasks[taskId].desc}</p>
+        </div>
+        </div>
+        `
+        if (JSON.parse(localStorage.getItem('pva-v2-settings')).compactTasks = true){
+            tasksContainer.insertAdjacentHTML('beforeend', compactTemplate);
+        } else if (JSON.parse(localStorage.getItem('pva-v2-settings')).compactTasks = false){ 
         tasksContainer.insertAdjacentHTML('beforeend', template);
+        }
     }
 }
+
 window.onload = function () {
+    let ct = JSON.parse(localStorage.getItem('pva-v2-settings')).compactTasks;
     if (tasksContainer){
-            if (JSON.parse(localStorage.getItem('pva-v2-settings').compactTasks = true)) {
+            if (ct == true) {
                 reloadTasksCompact();
                 document.getElementById('compactToggle').click()
-            } else {
+            } else if (ct == false) { 
                 loadTasks();
             }
     } else {
+
         let checkForEl = setInterval(function() {
             if (tasksContainer){
-                if (JSON.parse(localStorage.getItem('pva-v2-settings').compactTasks = true)) {
-                    reloadTasksCompact()
-                } else {
+                if (ct = true) {
+                    reloadTasksCompact();
+                    document.getElementById('compactToggle').click()
+                } else if (ct = false) { 
                     loadTasks();
-                }         
+                }      
                    clearInterval(checkForEl);
             return;
         }
         },10)
     }
 };
+
 function loadTasks() {
     const tasksContainer = document.getElementById('tasksContainer'); //redundant?
     let tasks = localStorage.getItem('tasks');
@@ -291,8 +310,6 @@ function loadTasks() {
             </div>
         `;        
         tasksContainer.insertAdjacentHTML('beforeend', template);
-        tasksContainer.classList.remove('grid-cols-1');
-        tasksContainer.classList.add('grid-cols-2');
         let cboxID = document.getElementById(`cbox-${taskId}`)
         if (tasks[taskId].complete == true) {
             cboxID.click()
@@ -315,8 +332,6 @@ function reloadTasksCompact() {
     </div>
         `;
         tasksContainer.insertAdjacentHTML('beforeend', template);
-        tasksContainer.classList.remove('grid-cols-2');
-        tasksContainer.classList.add('grid-cols-1');
         let cboxID = document.getElementById(`cbox-${taskId}`)
         if (tasks[taskId].complete == true) {
             cboxID.click()
@@ -356,6 +371,7 @@ document.getElementById('compactToggle').addEventListener('click', function() {
         reloadTasksCompact()
     } else if (!this.checked) {
         tasksContainer.innerHTML = ``;
+        updateSettingsItem('compactTasks', false);
         loadTasks();
     }
 })
