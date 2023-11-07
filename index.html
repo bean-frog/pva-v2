@@ -26,7 +26,7 @@
                     <span style="--value:0;"></span>
                   </span>  
                   <br>
-                  <button class="btn btn-xs mb-4" onclick="clearTimer()">Reset</button>
+                 <!-- <button class="btn btn-xs mb-4" onclick="clearTimer()">Reset</button>-->
 
                   <h2 class="mb-2 text-md font-bold">Timer</h2>
                   <h2 class="mb-2 ml-4 text-md ">Presets:</h2>
@@ -53,6 +53,16 @@
                         <input id="compactToggle" name="compactMode" type="checkbox" class="checkbox mb-2">
                         <label for="compactMode" class="ml-2">Compact Mode</label>
                     </div>
+                </div>
+                <div class="flex flex-col">
+                    <h2 class="mb-2 text-md font-bold">Alarm Sound</h2>
+                        <select id="soundchoice" class="select w-full max-w-xs font-bold text-lg mb-2 ml-4">
+                            <option disabled selected>Pick a sound</option>
+                            <option value="alarmclock">Alarm Clock</option>
+                            <option value="eas">EAS Alarm</option>
+                            <option value="ketamine">🦄KETAMINE🦄</option>
+                          </select>
+                          <button id="preview" class="btn btn-sm w-fit ml-4">Preview</button>
                 </div>
                 <div class="flex flex-col">
                     <h2 class="mb-2 text-md font-bold">Intensity</h2>

@@ -3,7 +3,7 @@
  * Was this really a good idea? who knows
  * anyway this is the js file with all the PVA logic and stuff
  * (c) 2023 Graeme Kieran etc etc nerd shit but like it still applies so pay attention
-*********************/
+ *********************/
 //vv settings vv
 function updateSettingsItem(key, newVal) {
     const storageKey = 'pva-v2-settings';
@@ -21,7 +21,9 @@ function updateSettingsItem(key, newVal) {
             console.error('Error parsing JSON from Local Storage:', error);
         }
     } else {
-        const newData = { [key]: newVal };
+        const newData = {
+            [key]: newVal
+        };
         localStorage.setItem(storageKey, JSON.stringify(newData));
     }
 }
@@ -40,7 +42,7 @@ function setTimer(min, callback) {
         let minutesElement = cdElement.querySelector("span:nth-of-type(2)");
         let secondsElement = cdElement.querySelector("span:nth-of-type(3)");
         let totalSeconds = min * 60;
-        
+
         function updateTimer() {
             let hours = Math.floor(totalSeconds / 3600);
             let minutes = Math.floor((totalSeconds % 3600) / 60);
@@ -48,7 +50,7 @@ function setTimer(min, callback) {
             hoursElement.style.setProperty('--value', hours);
             minutesElement.style.setProperty('--value', minutes);
             secondsElement.style.setProperty('--value', seconds);
-            
+
             if (totalSeconds <= 0) {
                 clearInterval(intervalId);
                 if (typeof callback === 'function') {
@@ -58,13 +60,14 @@ function setTimer(min, callback) {
                 totalSeconds--;
             }
         }
-        
+
         updateTimer();
         let intervalId = setInterval(updateTimer, 1000);
     } else {
         console.log('Countdown element not found.');
     }
 }
+
 function clearTimer() {
     let cdElement = document.querySelector(".countdown");
     if (cdElement) {
@@ -76,11 +79,12 @@ function clearTimer() {
     }
     clearInterval(intervalId);
 }
+
 function timerCycle(min1, min2, breakAfter, count = 0) {
     if (count < breakAfter) {
-        setTimer(min1, function () {
+        setTimer(min1, function() {
             pvaAlert();
-            setTimer(min2, function () {
+            setTimer(min2, function() {
                 pvaAlert('endbreak', JSON.parse(localStorage.getItem('pva-v2-settings')).intensity);
                 timerCycle(min1, min2, breakAfter, count + 1);
             });
@@ -98,26 +102,26 @@ document.getElementById('customStart').addEventListener('click', function() {
 //add the '.regulate-size' class to any number input 
 const numberInputs = document.getElementsByClassName('regulate-size');
 Array.from(numberInputs).forEach(numberInput => {
-   numberInput.addEventListener('change', function() {
-    const maxValue = parseFloat(numberInput.max);
-    if (parseFloat(numberInput.value) > maxValue) {
-        numberInput.value = maxValue;
-    }
-    switch (numberInput.getAttribute("id")) {
-        case "minOn":
-            updateSettingsItem('minOn', numberInput.value)
-            break;
-        case "minOff":
-            updateSettingsItem('minOff', numberInput.value)
-            break;
-        case "breakAfter":
-            updateSettingsItem('breakAfter', numberInput.value)
-            break;
-            
-        default:
-            break;
-    }
-}); 
+    numberInput.addEventListener('change', function() {
+        const maxValue = parseFloat(numberInput.max);
+        if (parseFloat(numberInput.value) > maxValue) {
+            numberInput.value = maxValue;
+        }
+        switch (numberInput.getAttribute("id")) {
+            case "minOn":
+                updateSettingsItem('minOn', numberInput.value)
+                break;
+            case "minOff":
+                updateSettingsItem('minOff', numberInput.value)
+                break;
+            case "breakAfter":
+                updateSettingsItem('breakAfter', numberInput.value)
+                break;
+
+            default:
+                break;
+        }
+    });
 });
 //auto-populate inputs on load
 document.addEventListener('DOMContentLoaded', function() {
@@ -134,8 +138,10 @@ document.addEventListener('DOMContentLoaded', function() {
 //^^ timer ^^
 //vv alert vv
 function pvaAlert(type, intensity) {
+
     switch (type) {
         case "endbreak":
+            playSound('assets/sound/' + document.getElementById('soundchoice').value + '.mp3')
             const messages = {
                 low: "Hey there lazy, get back to work NOW. I won't ask again.",
                 mid: "your break is over you piece of shit, get back to work or you'll be a disgrace to your whole fucking family.",
@@ -149,30 +155,30 @@ function pvaAlert(type, intensity) {
                 case "low":
                     msg = messages.low;
                     timer = null;
-                   timerbar = false;
+                    timerbar = false;
                     break;
                 case "mid":
                     msg = messages.mid;
                     timer = null;
-                   timerbar = false;
+                    timerbar = false;
                     break;
                 case "high":
                     msg = messages.high;
                     timer = null;
-                   timerbar = false;
+                    timerbar = false;
                     break;
                 case "nuclear":
-                   msg = messages.nuclear;
-                   timer = 10000;
-                   timerbar = true
-                   var punishment = setTimeout(function(){
-                    for (let i = 0; i < 10; i++) {
-                     let a = document.createElement('a');
-                    a.setAttribute('target', "_blank");
-                    a.href = "https://www.pornhub.com";
-                    a.click();
-                    }
-                   }, 10000)
+                    msg = messages.nuclear;
+                    timer = 10000;
+                    timerbar = true
+                    var punishment = setTimeout(function() {
+                        for (let i = 0; i < 10; i++) {
+                            let a = document.createElement('a');
+                            a.setAttribute('target', "_blank");
+                            a.href = "https://www.pornhub.com";
+                            a.click();
+                        }
+                    }, 10000)
                     break;
                 default:
                     msg = 'invalid intensity value recieved. (break is over btw)'
@@ -216,27 +222,32 @@ function pvaAlert(type, intensity) {
 //vv tasks vv
 let tasksContainer = document.getElementById('tasksContainer');
 async function addTask() {
-    const { value: formValues } = await Swal.fire({
+    const {
+        value: formValues
+    } = await Swal.fire({
         title: 'New Task',
-        html:
-          '<input id="swal-input1" class="swal2-input text-black" placeholder="Task Title">' +
-          '<input id="swal-input2" class="swal2-input text-black" placeholder="Task Description">',
+        html: '<input id="swal-input1" class="swal2-input text-black" placeholder="Task Title">' +
+            '<input id="swal-input2" class="swal2-input text-black" placeholder="Task Description">',
         focusConfirm: false,
         preConfirm: () => {
-          const input1 = document.getElementById('swal-input1').value;
-          const input2 = document.getElementById('swal-input2').value;
-          if (input1.trim() === '' || input2.trim() === '') {
-            Swal.showValidationMessage('Both inputs are required');
-            return false; 
-          }
-          return [input1, input2];
+            const input1 = document.getElementById('swal-input1').value;
+            const input2 = document.getElementById('swal-input2').value;
+            if (input1.trim() === '' || input2.trim() === '') {
+                Swal.showValidationMessage('Both inputs are required');
+                return false;
+            }
+            return [input1, input2];
         }
     });
     if (formValues) {
         let tasks = localStorage.getItem('tasks');
         tasks = tasks ? JSON.parse(tasks) : {};
         const taskId = Object.keys(tasks).length + 1;
-        const newTask = { title: formValues[0], desc: formValues[1], complete: false };
+        const newTask = {
+            title: formValues[0],
+            desc: formValues[1],
+            complete: false
+        };
         tasks[taskId] = newTask;
         localStorage.setItem('tasks', JSON.stringify(tasks));
         let template = `
@@ -259,38 +270,39 @@ async function addTask() {
         </div>
         </div>
         `
-        if (JSON.parse(localStorage.getItem('pva-v2-settings')).compactTasks = true){
+        if (JSON.parse(localStorage.getItem('pva-v2-settings')).compactTasks = true) {
             tasksContainer.insertAdjacentHTML('beforeend', compactTemplate);
-        } else if (JSON.parse(localStorage.getItem('pva-v2-settings')).compactTasks = false){ 
-        tasksContainer.insertAdjacentHTML('beforeend', template);
+        } else if (JSON.parse(localStorage.getItem('pva-v2-settings')).compactTasks = false) {
+            tasksContainer.insertAdjacentHTML('beforeend', template);
         }
     }
 }
 
-window.onload = function () {
+window.onload = function() {
     let ct = JSON.parse(localStorage.getItem('pva-v2-settings')).compactTasks;
-    if (tasksContainer){
-            if (ct == true) {
-                reloadTasksCompact();
-                document.getElementById('compactToggle').click()
-            } else if (ct == false) { 
-                loadTasks();
-            }
+    if (tasksContainer) {
+        if (ct == true) {
+            reloadTasksCompact();
+            document.getElementById('compactToggle').click()
+        } else if (ct == false) {
+            loadTasks();
+        }
     } else {
 
         let checkForEl = setInterval(function() {
-            if (tasksContainer){
+            if (tasksContainer) {
                 if (ct = true) {
                     reloadTasksCompact();
                     document.getElementById('compactToggle').click()
-                } else if (ct = false) { 
+                } else if (ct = false) {
                     loadTasks();
-                }      
-                   clearInterval(checkForEl);
-            return;
-        }
-        },10)
-    }
+                }
+                clearInterval(checkForEl);
+                return;
+            }
+        }, 10)
+    };
+
 };
 
 function loadTasks() {
@@ -308,7 +320,7 @@ function loadTasks() {
                 </div>
                 <p class="break-words">${tasks[taskId].desc}</p>
             </div>
-        `;        
+        `;
         tasksContainer.insertAdjacentHTML('beforeend', template);
         let cboxID = document.getElementById(`cbox-${taskId}`)
         if (tasks[taskId].complete == true) {
@@ -316,6 +328,7 @@ function loadTasks() {
         }
     }
 }
+
 function reloadTasksCompact() {
     let tasks = localStorage.getItem('tasks');
     tasks = tasks ? JSON.parse(tasks) : {};
@@ -338,6 +351,7 @@ function reloadTasksCompact() {
         }
     }
 }
+
 function removeTask(taskId) {
     let tasks = localStorage.getItem('tasks');
     tasks = tasks ? JSON.parse(tasks) : {};
@@ -347,18 +361,19 @@ function removeTask(taskId) {
     const taskElement = document.querySelector(`[data-task-id="${taskId}"]`);
     taskElement.remove();
 }
+
 function toggleTaskCompletion(checkbox) {
     const taskElement = checkbox.parentElement.parentElement;
     if (checkbox.checked) {
         taskElement.classList.add('bg-emerald-200');
         taskElement.classList.remove('bg-white');
         let taskId = checkbox.id.replace(/cbox-/g, '');
-         let tasks = localStorage.getItem('tasks');
-    tasks = tasks ? JSON.parse(tasks) : {};
-tasks[taskId].complete = true;
-    localStorage.setItem('tasks', JSON.stringify(tasks));
+        let tasks = localStorage.getItem('tasks');
+        tasks = tasks ? JSON.parse(tasks) : {};
+        tasks[taskId].complete = true;
+        localStorage.setItem('tasks', JSON.stringify(tasks));
 
-           
+
     } else {
         taskElement.classList.remove('bg-emerald-200');
         taskElement.classList.add('bg-white');
@@ -381,7 +396,6 @@ function playSound(path) {
     let soundEl = document.getElementById('pva-sound');
     if (!soundEl) {
         let pvaSound = document.createElement('audio');
-        pvaSound.setAttribute('controls', 'false');
         pvaSound.setAttribute('autoplay', true);
         pvaSound.setAttribute('id', 'pva-sound');
         pvaSound.setAttribute('src', path);
@@ -393,15 +407,48 @@ function playSound(path) {
         soundEl.play();
     }
 }
+document.getElementById('soundchoice').addEventListener('change', function() {
+updateSettingsItem('sound', this.value);
+});
+document.addEventListener('DOMContentLoaded', function() {
+document.getElementById('soundchoice').value = JSON.parse(localStorage.getItem('pva-v2-settings')).sound
+});
+document.getElementById('preview').addEventListener('click', function(){
+var path = 'assets/sound/' + document.getElementById('soundchoice').value + '.mp3';
+console.log(path);
+playSound(path)
+});
 //^^ sound ^^
 //vv intensity vv
 document.addEventListener('DOMContentLoaded', function() {
-   
+    let savedIntensity = JSON.parse(localStorage.getItem('pva-v2-settings')).intensity;
     let def = document.getElementById('intensityDef');
     let radios = document.getElementById('intensitySel').getElementsByTagName('input');
     radios = Array.from(radios);
-    radios[0].checked = true;
-    def.innerHTML = '<span class="font-bold">Low</span>: a very mild push in the right direction. Not harsh at all, just firm. No explicit language.';
+    switch (savedIntensity) {
+        case "low":
+            radios[0].checked = true;
+            def.innerHTML = `<span class="font-bold">Low</span>: a very mild push in the right direction. Not harsh at all, just firm. No explicit language.`;
+            break;
+        case "mid":
+            radios[1].checked = true;
+            def.innerHTML = `<span class="font-bold">Mid</span>: a bit of a step up with some spice. Explicit language.`;
+            break;
+        case "high":
+            radios[2].checked = true;
+            def.innerHTML = `<span class="font-bold">High</span>: you guessed it, even stronger than the last one, also contains explicit language.`;
+            break;
+
+        case "nuclear":
+            radios[3].checked = true;
+            def.innerHTML = `<span class='font-bold'>Nuclear</span>: not only does this abomination contain even more explicit language, there's also a little surprise if you dont get back to work on time.....`;
+            break;
+        default:
+            radios[0].checked = true;
+            def.innerHTML = '<span class="font-bold">Low</span>: a very mild push in the right direction. Not harsh at all, just firm. No explicit language.';
+
+            break;
+    }
     radios.forEach(radio => {
         radio.addEventListener('input', function() {
             switch (this.value) {
@@ -413,17 +460,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     def.innerHTML = '<span class="font-bold">Mid</span>: a bit of a step up with some spice. Explicit language.'
                     updateSettingsItem('intensity', 'mid');
                     break;
-                
+
                 case 'high':
                     def.innerHTML = '<span class="font-bold">High</span>: you guessed it, even stronger than the last one, also contains explicit language.'
                     updateSettingsItem('intensity', 'high');
                     break;
-                
+
                 case 'nuclear':
-                    def.innerHTML = "<span class='font-bold'>Nuclear</span>: not only does this abomination contain explicit language, there's also a little surprise if you dont get back to work on time....."
+                    def.innerHTML = "<span class='font-bold'>Nuclear</span>: not only does this abomination contain even more explicit language, there's also a little surprise if you dont get back to work on time....."
                     updateSettingsItem('intensity', 'nuclear');
                     break;
-                
+
                 default:
                     break;
             }
