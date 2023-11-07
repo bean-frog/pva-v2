@@ -125,6 +125,7 @@ Array.from(numberInputs).forEach(numberInput => {
 });
 //auto-populate inputs on load
 document.addEventListener('DOMContentLoaded', function() {
+    if (localStorage.getItem('pva-v2-settings')) {
     if (JSON.parse(localStorage.getItem('pva-v2-settings')).minOn) {
         document.getElementById('minOn').value = JSON.parse(localStorage.getItem('pva-v2-settings')).minOn
     };
@@ -134,6 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (JSON.parse(localStorage.getItem('pva-v2-settings')).breakAfter) {
         document.getElementById('breakAfter').value = JSON.parse(localStorage.getItem('pva-v2-settings')).breakAfter
     };
+} 
 });
 //^^ timer ^^
 //vv alert vv
