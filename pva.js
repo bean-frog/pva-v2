@@ -6,7 +6,14 @@
  *********************/
 document.addEventListener('DOMContentLoaded', function() {
     if (!localStorage.getItem('pva-v2-settings')) {
-        let settingsJsonStruct = '"minOn":"","minOff":"","breakAfter":"","compactTasks":false,"intensity":"low","sound":"alarmclock"}'
+        let settingsJsonStruct = `{
+            "minOn":null,
+            "minOff":null,
+            "breakAfter":null,
+            "compactTasks":false,
+            "intensity":"low",
+            "sound":"alarmclock"
+        }`
         localStorage.setItem('pva-v2-settings', settingsJsonStruct)
     }
 })
