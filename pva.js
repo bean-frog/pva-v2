@@ -153,10 +153,9 @@ document.addEventListener('DOMContentLoaded', function() {
 //^^ timer ^^
 //vv alert vv
 function pvaAlert(type, intensity) {
-
+playSound('assets/sound/' + document.getElementById('soundchoice').value + '.mp3')
     switch (type) {
         case "endbreak":
-            playSound('assets/sound/' + document.getElementById('soundchoice').value + '.mp3')
             const messages = {
                 low: "Hey there lazy, get back to work NOW. I won't ask again.",
                 mid: "your break is over you piece of shit, get back to work or you'll be a disgrace to your whole fucking family.",
