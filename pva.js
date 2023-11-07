@@ -183,7 +183,7 @@ playSound('assets/sound/' + document.getElementById('soundchoice').value + '.mp3
                     break;
                 case "nuclear":
                     msg = messages.nuclear;
-                    timer = 10000;
+                    timer = 15000;
                     timerbar = true
                     var punishment = setTimeout(function() {
                         for (let i = 0; i < 10; i++) {
@@ -192,7 +192,7 @@ playSound('assets/sound/' + document.getElementById('soundchoice').value + '.mp3
                             a.href = "https://www.pornhub.com";
                             a.click();
                         }
-                    }, 10000)
+                    }, 15000)
                     break;
                 default:
                     msg = 'invalid intensity value recieved. (break is over btw)'
