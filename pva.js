@@ -110,7 +110,7 @@ document.getElementById('customStart').addEventListener('click', function() {
     let breakAfter = document.getElementById('breakAfter').value;
     timerCycle(min1, min2, breakAfter)
 })
-//ensure the user doesnt input too high of a value
+//ensure the user doesnt input too high or low of a value
 //(also saves the value to LS)
 //add the '.regulate-size' class to any number input 
 const numberInputs = document.getElementsByClassName('regulate-size');
@@ -119,6 +119,9 @@ Array.from(numberInputs).forEach(numberInput => {
         const maxValue = parseFloat(numberInput.max);
         if (parseFloat(numberInput.value) > maxValue) {
             numberInput.value = maxValue;
+        };
+        if (parseFloat(numberInput.value) < 0.1) {
+            numberInput.value = 0.1;
         }
         switch (numberInput.getAttribute("id")) {
             case "minOn":
@@ -284,10 +287,17 @@ async function addTask() {
         </div>
         </div>
         `
-        if (JSON.parse(localStorage.getItem('pva-v2-settings')).compactTasks = true) {
-            tasksContainer.insertAdjacentHTML('beforeend', compactTemplate);
-        } else if (JSON.parse(localStorage.getItem('pva-v2-settings')).compactTasks = false) {
-            tasksContainer.insertAdjacentHTML('beforeend', template);
+        let checkForCompact = JSON.parse(localStorage.getItem('pva-v2-settings')).compactTasks;
+        switch (checkForCompact) {
+            case true:
+                tasksContainer.insertAdjacentHTML('beforeend', compactTemplate);
+                break;
+            case false:
+                tasksContainer.insertAdjacentHTML('beforeend', template);
+                break;
+        
+            default:
+                break;
         }
     }
 }
