@@ -4,6 +4,14 @@
  * anyway this is the js file with all the PVA logic and stuff
  * (c) 2023 Graeme Kieran etc etc nerd shit but like it still applies so pay attention
  *********************/
+document.addEventListener('DOMContentLoaded', function() {
+    if (!localStorage.getItem('pva-v2-settings')) {
+        let settingsJsonStruct = `
+        {"minOn":"","minOff":"","breakAfter":"","compactTasks":false,"intensity":"low","sound":"alarmclock"}
+        `
+        localStorage.setItem('pva-v2-settings', JSON.stringify(settingsJsonStruct))
+    }
+})
 //vv settings vv
 function updateSettingsItem(key, newVal) {
     const storageKey = 'pva-v2-settings';
