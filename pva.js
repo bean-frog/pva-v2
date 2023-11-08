@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 })
 //vv settings vv
-function updateSettingsItem(key, newVal) {
+function updateSettingsItem(key, newVal) { //updates a given key in the settings JSON in local storage
     const storageKey = 'pva-v2-settings';
     let storedData = localStorage.getItem(storageKey);
     if (storedData) {
@@ -40,10 +40,9 @@ function updateSettingsItem(key, newVal) {
         localStorage.setItem(storageKey, JSON.stringify(newData));
     }
 }
-
 //^^ settings ^^
 //vv timer vv
-function setTimer(min, callback) {
+function setTimer(min, callback) { //sets the PVA timer interval as well as the clock indicator 
     let cdElement = document.querySelector(".countdown");
     if (cdElement) {
         cdElement.innerHTML = `
@@ -80,8 +79,7 @@ function setTimer(min, callback) {
         console.log('Countdown element not found.');
     }
 }
-
-function clearTimer() {
+function clearTimer() { //DOES NOT WORK clears the timer (fix soon :( maybe)
     let cdElement = document.querySelector(".countdown");
     if (cdElement) {
         cdElement.innerHTML = `
@@ -92,8 +90,7 @@ function clearTimer() {
     }
     clearInterval(intervalId);
 }
-
-function timerCycle(min1, min2, breakAfter, count = 0) {
+function timerCycle(min1, min2, breakAfter, count = 0) { //cycles the timer instead of just once, used for study cycles
     if (count < breakAfter) {
         setTimer(min1, function() {
             pvaAlert();
@@ -104,11 +101,16 @@ function timerCycle(min1, min2, breakAfter, count = 0) {
         });
     }
 }
-document.getElementById('customStart').addEventListener('click', function() {
+document.getElementById('customStart').addEventListener('click', function() { //starts a timer based on custom values
     let min1 = document.getElementById('minOn').value;
     let min2 = document.getElementById('minOff').value;
     let breakAfter = document.getElementById('breakAfter').value;
-    timerCycle(min1, min2, breakAfter)
+    if (!min1 || !min2 || !breakAfter) {
+        alert('must have all 3 values (min on, min off, times)')
+    } else {
+       timerCycle(min1, min2, breakAfter) 
+    }
+    
 })
 //ensure the user doesnt input too high or low of a value
 //(also saves the value to LS)
@@ -139,8 +141,8 @@ Array.from(numberInputs).forEach(numberInput => {
         }
     });
 });
-//auto-populate inputs on load
-document.addEventListener('DOMContentLoaded', function() {
+
+document.addEventListener('DOMContentLoaded', function() {//auto-populate inputs on load
     if (localStorage.getItem('pva-v2-settings')) {
     if (JSON.parse(localStorage.getItem('pva-v2-settings')).minOn) {
         document.getElementById('minOn').value = JSON.parse(localStorage.getItem('pva-v2-settings')).minOn
