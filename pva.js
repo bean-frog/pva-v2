@@ -155,10 +155,38 @@ document.addEventListener('DOMContentLoaded', function() {//auto-populate inputs
     };
 } 
 });
+/*
+function setBlockDisplay(which) {
+    let display = document.getElementById('blockDisplay');
+    switch (which) {
+        case "work":
+            display.textContent = "Work";
+            break;
+        case "break":
+            display.textContent = "Break";
+        default:
+            display.textContent = "";
+            break;
+    }
+}
+function switchBlockDisplay() {
+    let display = document.getElementById('blockDisplay');
+    switch (display.textContent) {
+        case "Work":
+            display.textContent = "Break";
+            break;
+        case "Break":
+            display.textContent = "Work";
+            break;
+        default:
+            break;
+    }
+}
+*/
 //^^ timer ^^
 //vv alert vv
 function pvaAlert(type, intensity) {
-playSound('assets/sound/' + document.getElementById('soundchoice').value + '.mp3')
+playSound('assets/sound/' + document.getElementById('soundchoice').value + '.mp3');
     switch (type) {
         case "endbreak":
             const messages = {
@@ -194,7 +222,7 @@ playSound('assets/sound/' + document.getElementById('soundchoice').value + '.mp3
                         for (let i = 0; i < 10; i++) {
                             let a = document.createElement('a');
                             a.setAttribute('target', "_blank");
-                            a.href = "https://www.pornhub.com";
+                            a.href = "https://cornhub.website";
                             a.click();
                         }
                     }, 15000)
@@ -245,8 +273,8 @@ async function addTask() {
         value: formValues
     } = await Swal.fire({
         title: 'New Task',
-        html: '<input id="swal-input1" class="swal2-input text-black" placeholder="Task Title">' +
-            '<input id="swal-input2" class="swal2-input text-black" placeholder="Task Description">',
+        html: '<input id="swal-input1" class="text-black swal2-input" placeholder="Task Title">' +
+            '<input id="swal-input2" class="text-black swal2-input" placeholder="Task Description">',
         focusConfirm: false,
         preConfirm: () => {
             const input1 = document.getElementById('swal-input1').value;
@@ -270,22 +298,22 @@ async function addTask() {
         tasks[taskId] = newTask;
         localStorage.setItem('tasks', JSON.stringify(tasks));
         let template = `
-            <div class="p-4 bg-white rounded-lg shadow-md m-2" data-task-id="${taskId}">
+            <div class="p-4 m-2 bg-white rounded-lg shadow-md" data-task-id="${taskId}">
                 <div class="flex flex-row">
-                    <input type="checkbox" class="checkbox mr-4" onchange="toggleTaskCompletion(this)">
-                    <button class="p-2 pt-0 pl-0" onclick="removeTask(${taskId})"><i class="fas fa-trash text-red-600"></i></button>
+                    <input type="checkbox" class="mr-4 checkbox" onchange="toggleTaskCompletion(this)">
+                    <button class="p-2 pt-0 pl-0" onclick="removeTask(${taskId})"><i class="text-red-600 fas fa-trash"></i></button>
                     <h3 class="mb-2 text-lg font-bold">${formValues[0]}</h3>
                 </div>
                 <p class="break-words">${formValues[1]}</p>
             </div>
         `;
         let compactTemplate = `
-        <div class="p-2 bg-white rounded-lg shadow-md m-2"data-task-id="${taskId}">
+        <div class="p-2 m-2 bg-white rounded-lg shadow-md"data-task-id="${taskId}">
         <div class="flex flex-row items-center">
-            <input id="cbox-${taskId}" type="checkbox" class="checkbox mr-2" onchange="toggleTaskCompletion(this)">
-            <button class="pr-2 self-center" onclick="removeTask(${taskId})"><i class="fas fa-trash text-red-600"></i></button>
+            <input id="cbox-${taskId}" type="checkbox" class="mr-2 checkbox" onchange="toggleTaskCompletion(this)">
+            <button class="self-center pr-2" onclick="removeTask(${taskId})"><i class="text-red-600 fas fa-trash"></i></button>
             <h3 class="self-center text-lg font-bold">${tasks[taskId].title}</h3>
-            <p class="ml-2 self-center">${tasks[taskId].desc}</p>
+            <p class="self-center ml-2">${tasks[taskId].desc}</p>
         </div>
         </div>
         `
@@ -338,10 +366,10 @@ function loadTasks() {
 
     for (const taskId in tasks) {
         let template = `
-            <div class="p-4 bg-white rounded-lg shadow-md m-2" data-task-id="${taskId}">
+            <div class="p-4 m-2 bg-white rounded-lg shadow-md" data-task-id="${taskId}">
                 <div class="flex flex-row">
-                    <input id="cbox-${taskId}" type="checkbox" class="checkbox mr-4" onchange="toggleTaskCompletion(this)">
-                    <button class="p-2 pt-0 pl-0" onclick="removeTask(${taskId})"><i class="fas fa-trash text-red-600"></i></button>
+                    <input id="cbox-${taskId}" type="checkbox" class="mr-4 checkbox" onchange="toggleTaskCompletion(this)">
+                    <button class="p-2 pt-0 pl-0" onclick="removeTask(${taskId})"><i class="text-red-600 fas fa-trash"></i></button>
                     <h3 class="mb-2 text-lg font-bold">${tasks[taskId].title}</h3>
                 </div>
                 <p class="break-words">${tasks[taskId].desc}</p>
@@ -361,12 +389,12 @@ function reloadTasksCompact() {
 
     for (const taskId in tasks) {
         let template = `
-        <div class="p-2 bg-white rounded-lg shadow-md m-2"data-task-id="${taskId}">
+        <div class="p-2 m-2 bg-white rounded-lg shadow-md"data-task-id="${taskId}">
         <div class="flex flex-row items-center">
-            <input id="cbox-${taskId}" type="checkbox" class="checkbox mr-2" onchange="toggleTaskCompletion(this)">
-            <button class="pr-2 self-center" onclick="removeTask(${taskId})"><i class="fas fa-trash text-red-600"></i></button>
+            <input id="cbox-${taskId}" type="checkbox" class="mr-2 checkbox" onchange="toggleTaskCompletion(this)">
+            <button class="self-center pr-2" onclick="removeTask(${taskId})"><i class="text-red-600 fas fa-trash"></i></button>
             <h3 class="self-center text-lg font-bold">${tasks[taskId].title}</h3>
-            <p class="ml-2 self-center">${tasks[taskId].desc}</p>
+            <p class="self-center ml-2">${tasks[taskId].desc}</p>
         </div>
     </div>
         `;

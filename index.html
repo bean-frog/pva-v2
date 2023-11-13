@@ -20,27 +20,28 @@
     <div class="flex">
         <div class="p-4 m-4 w-1/4 h-screen bg-gray-200 rounded-lg shadow-lg">
             <div class="mb-4">
-                <span class="countdown text-4xl font-mono font-bold" style="font-family: 'Seven Segment'" id="countdown">
+                <span class="font-mono text-4xl font-bold countdown" style="font-family: 'Seven Segment'" id="countdown">
                     <span style="--value:0;"></span>:
                     <span style="--value:0;"></span> : 
                     <span style="--value:0;"></span>
                   </span>  
                   <br>
-                 <!-- <button class="btn btn-xs mb-4" onclick="clearTimer()">Reset</button>-->
+                  <div id="blockDisplay" class="mb-1 text-sm"></div>
+                 <!-- <button class="mb-4 btn btn-xs" onclick="clearTimer()">Reset</button>-->
 
-                  <h2 class="mb-2 text-md font-bold">Timer</h2>
-                  <h2 class="mb-2 ml-4 text-md ">Presets:</h2>
-                  <div class="flex flex-col w-fit ml-4">
-                    <button class="btn m-1" onclick="timerCycle(25, 5, 4)">Pomodoro (25 on, 5 off, 4 times)</button>
-                  <button class="btn m-1" onclick="timerCycle(50, 10, 4)">50 on 10  off, 4 times</button>
-                  <button class="btn m-1" onclick="timerCycle(60, 15, 4)">1h on, 15m off, 4 times</button>
+                  <h2 class="mb-2 font-bold text-md">Timer</h2>
+                  <h2 class="mb-2 ml-4 text-md">Presets:</h2>
+                  <div class="flex flex-col ml-4 w-fit">
+                    <button class="m-1 btn" onclick="timerCycle(25, 5, 4)">Pomodoro (25 on, 5 off, 4 times)</button>
+                  <button class="m-1 btn" onclick="timerCycle(50, 10, 4)">50 on 10  off, 4 times</button>
+                  <button class="m-1 btn" onclick="timerCycle(60, 15, 4)">1h on, 15m off, 4 times</button>
                   </div>
-                  <h2 class="mb-2 ml-4 text-md ">Custom:</h2>
+                  <h2 class="mb-2 ml-4 text-md">Custom:</h2>
                   <div class="ml-4">
                     <input type="number" step="1" min="1" max="1440" class="m-1 w-fit regulate-size" id="minOn">min on<br>
                     <input type="number" step="1" min="1" max="1440" class="m-1 w-fit regulate-size" id="minOff">min off<br>
                     <input type="number" step="1" min="1" max="10" class="m-1 w-fit regulate-size"id="breakAfter">times<br>
-                    <button class="btn m-1 btn-sm" id="customStart">Start</button>
+                    <button class="m-1 btn btn-sm" id="customStart">Start</button>
                   </div>
                     
                     
@@ -48,29 +49,29 @@
             <div>
                 <h2 class="mb-2 text-lg font-bold">Settings</h2>
                 <div class="flex flex-col">
-                    <h2 class="mb-2 text-md font-bold">Task List</h2>
+                    <h2 class="mb-2 font-bold text-md">Task List</h2>
                     <div class="flex flex-row ml-4">
-                        <input id="compactToggle" name="compactMode" type="checkbox" class="checkbox mb-2">
+                        <input id="compactToggle" name="compactMode" type="checkbox" class="mb-2 checkbox">
                         <label for="compactMode" class="ml-2">Compact Mode</label>
                     </div>
                 </div>
                 <div class="flex flex-col">
-                    <h2 class="mb-2 text-md font-bold">Alarm Sound</h2>
-                        <select id="soundchoice" class="select w-full max-w-xs font-bold text-md mb-2 ml-4">
+                    <h2 class="mb-2 font-bold text-md">Alarm Sound</h2>
+                        <select id="soundchoice" class="mb-2 ml-4 w-full max-w-xs font-bold select text-md">
                             <option disabled selected>Pick a sound</option>
                             <option value="alarmclock">Alarm Clock</option>
                             <option value="eas">EAS Alarm</option>
                             <option value="ketamine">🦄KETAMINE🦄</option>
                           </select>
-                          <button id="preview" class="btn btn-sm w-fit ml-4">Preview</button>
+                          <button id="preview" class="ml-4 btn btn-sm w-fit">Preview</button>
                 </div>
                 <div class="flex flex-col">
-                    <h2 class="mb-2 text-md font-bold">Intensity</h2>
+                    <h2 class="mb-2 font-bold text-md">Intensity</h2>
                     <div class="flex flex-row ml-4" id="intensitySel">
-                        <input id="default" type="radio" name="radio-1" value="low" class="radio m-2 ml-0 checked:bg-emerald-500" />
-                        <input type="radio" name="radio-1" value="mid" class="radio m-2 checked:bg-yellow-400" />
-                        <input type="radio" name="radio-1" value="high" class="radio m-2 checked:bg-orange-500" />
-                        <input type="radio" name="radio-1" value="nuclear" class="radio m-2 checked:bg-red-600" />
+                        <input id="default" type="radio" name="radio-1" value="low" class="m-2 ml-0 radio checked:bg-emerald-500" />
+                        <input type="radio" name="radio-1" value="mid" class="m-2 radio checked:bg-yellow-400" />
+                        <input type="radio" name="radio-1" value="high" class="m-2 radio checked:bg-orange-500" />
+                        <input type="radio" name="radio-1" value="nuclear" class="m-2 radio checked:bg-red-600" />
                     </div>
                     <div id="intensityDef" class="ml-4"></div>
                 </div>
@@ -81,7 +82,7 @@
         <div class="p-4 w-3/4">
             <h2 class="mb-4 text-2xl">Task List</h2>
             <div>
-                <button class="btn" id="addTask" onclick="addTask()"><i class="fas fa-plus text-green-500 text-3xl"></i></button>
+                <button class="btn" id="addTask" onclick="addTask()"><i class="text-3xl text-green-500 fas fa-plus"></i></button>
             </div>
             <div id="tasksContainer" class="grid grid-cols-2"> 
                 
